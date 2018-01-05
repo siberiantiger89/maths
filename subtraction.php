@@ -37,7 +37,7 @@
 <h2>Simple Subtraction in PHP</h2>
 <form action="subtraction.php" method="get">
 	<input type="text" name="a" value="<?php echo $a; ?>" /> - <input type="text" name="b" value="<?php echo $b; ?>" /> = <?php echo $answer; ?><br/><br/>
-	<input type="submit" value="Add Numbers" /><br/><br/>
+	<input type="submit" value="Subtract Numbers" /><br/><br/>
 </form>
 <a href="index.html" />Index Page</a>
 </body>
