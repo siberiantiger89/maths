@@ -30,7 +30,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Simple multiplication in PHP</title>
+<title>Simple Multiplication in PHP</title>
 </head>
 <body>
 <h1>Mathematical Functions in PHP</h1>
