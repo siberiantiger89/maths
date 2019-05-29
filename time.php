@@ -23,10 +23,13 @@
 			//validate user input
 			if((preg_match("/^(?:1[012]|0[0-9]):[0-5][0-9]$/",$a))&&(($b==='am')||($b==='pm'))&&(is_numeric($c))&&(is_numeric($d))){
 				$time_array=explode(':',$a);
-				if(($time_array[1]+($d%60))>=60){
-					$time_array[0]++;
+				$time_array[0]=$time_array[0]+$c;
+				$time_array[1]=$time_array[1]+$d;
+				if($time_array[1]>=60){
+					$time_array[0]=$time_array[0]+floor($time_array[1]/60);
+					$time_array[1]=$time_array[1]%60;
 				}
-				if((floor(($time_array[0]+$c+floor(($time_array[1]+$d)/60))/12))&1){
+				if((($time_array[0]/12)%2)===1){
 					if($b==='am'){
 						$period='pm';
 					} else {
@@ -35,7 +38,11 @@
 				} else {
 					$period=$b;
 				}
-				$answer=((str_pad((($time_array[0]+$c+(floor($d/60)))%12),2,0,STR_PAD_LEFT)).':'.(str_pad(((($time_array[1]+($d%60)))%60),2,0,STR_PAD_LEFT))).' '.$period;
+				$time_array[0]=(($time_array[0])%12);
+				if($time_array[0]===0){
+					$time_array[0]=12;
+				}
+				$answer=str_pad(($time_array[0]),2,0,STR_PAD_LEFT).':'.str_pad(($time_array[1]),2,0,STR_PAD_LEFT).' '.$period;
 			} else {
 				$answer='Invalid input. Please try again.';
 			}
