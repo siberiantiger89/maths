@@ -4,6 +4,8 @@
 	$organised_data='';
 	$asc_checked='checked';
 	$desc_checked='';
+	$name_checked='checked';
+	$value_checked='';
 	$errMsg='';
 
 	//if submit button has been pressed
@@ -12,6 +14,7 @@
 		//get user input
 		$unorganised_data=$_POST['unorganised_data'];
 		$order=$_POST['order'];
+		$sort=$_POST['sort'];
 
 		//filter user input
 		$unorganised_data=filter_var($unorganised_data,FILTER_SANITIZE_STRING);
@@ -32,7 +35,25 @@
 				}
 			}
 			if($error_count===0){
-				function asc_organise($element1,$element2) {
+				function asc_organise_name($element1,$element2) {
+					if ($element1[0]===$element2[0]){
+						return 0;
+					} else if ($element1[0]<$element2[0]){
+						return -1;
+					} else {
+						return 1;
+					}
+				}
+				function desc_organise_name($element1,$element2) {
+					if ($element1[0]===$element2[0]){
+						return 0;
+					} else if ($element1[0]>$element2[0]){
+						return -1;
+					} else {
+						return 1;
+					}
+				}
+				function asc_organise_value($element1,$element2) {
 					if ($element1[1]===$element2[1]){
 						return 0;
 					} else if ($element1[1]<$element2[1]){
@@ -41,7 +62,7 @@
 						return 1;
 					}
 				}
-				function desc_organise($element1,$element2) {
+				function desc_organise_value($element1,$element2) {
 					if ($element1[1]===$element2[1]){
 						return 0;
 					} else if ($element1[1]>$element2[1]){
@@ -50,14 +71,30 @@
 						return 1;
 					}
 				}
-				if($order==='asc'){
-					usort($data_array,'asc_organise');
-					$asc_checked='checked';
-					$desc_checked='';
+				if($sort==='name'){
+					$name_checked='checked';
+					$value_checked='';
+					if($order==='asc'){
+						usort($data_array,'asc_organise_name');
+						$asc_checked='checked';
+						$desc_checked='';
+					} else {
+						usort($data_array,'desc_organise_name');
+						$asc_checked='';
+						$desc_checked='checked';
+					}
 				} else {
-					usort($data_array,'desc_organise');
-					$asc_checked='';
-					$desc_checked='checked';
+					$name_checked='';
+					$value_checked='checked';
+					if($order==='asc'){
+						usort($data_array,'asc_organise_value');
+						$asc_checked='checked';
+						$desc_checked='';
+					} else {
+						usort($data_array,'desc_organise_value');
+						$asc_checked='';
+						$desc_checked='checked';
+					}
 				}
 				for($j=0;$j<$data_array_count;++$j){
 					$organised_data.=$data_array[$j][0].' '.$data_array[$j][1]."\n";
@@ -114,6 +151,14 @@
 		</div>
 		<div class="column">
 			<textarea name="organised_data" id="organised_data" cols="20" rows="10" maxlength="200"><?php echo $organised_data; ?></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="column">
+			<strong>Sort by Name: </strong><input type="radio" name="sort" value="name" <?php echo $name_checked; ?> />
+		</div>
+		<div class="column">
+			<strong>Sort by Value: </strong><input type="radio" name="sort" value="value" <?php echo $value_checked; ?> />
 		</div>
 	</div>
 	<div class="row">
